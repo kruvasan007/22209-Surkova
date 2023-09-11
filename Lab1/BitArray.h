@@ -10,7 +10,7 @@ private:
     size_t bitSize;
     size_t byteSize;
 
-    bool checkSize(const BitArray &b);
+    bool checkSize(const BitArray &b) const;
 
 public:
     BitArray();

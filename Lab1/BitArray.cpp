@@ -37,6 +37,10 @@ BitArray &BitArray::set() {
 }
 
 BitArray &BitArray::set(size_t n, bool val) {
+    if (bitSize < n) {
+        std::cout << "Error: size is smaller than n" << std::endl;
+        return *this;
+    }
     size_t bytePosition = n / (sizeof(int) * 8);
     int relativeChanges = 1 << (n - bytePosition * (sizeof(int) * 8));
     bArr[bytePosition] = val ? bArr[bytePosition] | relativeChanges :
@@ -69,12 +73,13 @@ void BitArray::resize(size_t numBits, bool value) {
     size_t newByteSize = ceil((numBits * 1.0) / (sizeof(int) * 8));
     if (byteSize < newByteSize)
         bArr.resize(newByteSize);
+    size_t addBit = numBits - bitSize;
     for (int i = 0; i < bitSize; ++i)
         set(i, (*this)[i]);
-    for (size_t i = bitSize; i < numBits; ++i)
-        set(i, value);
-    bitSize = numBits;
     byteSize = newByteSize;
+    bitSize = numBits;
+    for (size_t i = numBits - addBit; i < numBits; ++i)
+        set(i, value);
 }
 
 void BitArray::pushBack(bool bit) {
@@ -98,9 +103,8 @@ BitArray BitArray::operator~() const {
 
 std::string BitArray::toString() const {
     std::string strBitArray;
-    for (int i = bitSize - 1; i >= 0; --i) {
+    for (int i = bitSize - 1; i >= 0; --i)
         strBitArray += std::to_string((*this)[i]);
-    }
     return strBitArray;
 }
 
@@ -135,7 +139,7 @@ bool BitArray::none() const {
     return !any();
 }
 
-bool BitArray::checkSize(const BitArray &b) {
+bool BitArray::checkSize(const BitArray &b) const {
     return bitSize == b.bitSize;
 }
 
@@ -183,9 +187,9 @@ BitArray &BitArray::operator<<=(size_t n) {
 
 BitArray &BitArray::operator>>=(size_t n) {
     for (size_t j = 0; j < n; ++j) {
-        for (size_t i = 0; i < bitSize - j; ++i)
+        for (size_t i = 0; i < bitSize - j - 1; ++i)
             set(i, (*this)[i + 1]);
-        set(0, false);
+        set(bitSize - 1, false);
     }
     return *this;
 }
@@ -203,9 +207,10 @@ BitArray BitArray::operator>>(size_t n) const {
 }
 
 BitArray operator&(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray();
+    BitArray newBitArr = BitArray(b1.size());
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
+        newBitArr.clear();
         return newBitArr;
     }
     for (int i = 0; i < b1.size(); ++i) {
@@ -215,9 +220,10 @@ BitArray operator&(const BitArray &b1, const BitArray &b2) {
 }
 
 BitArray operator|(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray();
+    BitArray newBitArr = BitArray(b1.size());
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
+        newBitArr.clear();
         return newBitArr;
     }
     for (int i = 0; i < b1.size(); ++i) {
@@ -227,14 +233,14 @@ BitArray operator|(const BitArray &b1, const BitArray &b2) {
 }
 
 BitArray operator^(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray();
+    BitArray newBitArr = BitArray(b1.size());
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
+        newBitArr.clear();
         return newBitArr;
     }
-    for (int i = 0; i < b1.size(); ++i) {
+    for (int i = 0; i < b1.size(); ++i)
         newBitArr.set(i, b1[i] | b2[i]);
-    }
     return newBitArr;
 }
 
