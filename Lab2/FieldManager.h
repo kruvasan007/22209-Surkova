@@ -1,19 +1,24 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+
+const size_t neighborhoodsCount = 8;
 
 class FieldManager {
 private:
-    size_t sizeFiled;
-    bool **field;
+    int sizeFiled;
+    std::vector<std::vector<bool>> field;
 public:
-    FieldManager();
+    FieldManager(int n = 10);
 
-    explicit FieldManager(int N = 10) {
+    std::vector<std::vector<bool>> &getField();
 
-    }
+    void set(int i, int j, bool state);
 
-    ~FieldManager();
+    int getSize() const;
+
+    int getCell(int i, int j);
 
 };
 

@@ -1,14 +1,39 @@
-//
-// Created by Anastasia on 13.09.2023.
-//
+#pragma once
 
-#ifndef LAB2_GAMEMANAGER_H
-#define LAB2_GAMEMANAGER_H
+#include <string>
+#include <fstream>
+#include "LifeManager.h"
+#include "UiManager.h"
+#include "FileData.h"
 
+const int SIZE_POS = 3;
+const int NAME_POS = 3;
 
 class GameManager {
+private:
+    std::string outputFileName;
+    FileData fileData;
+    LifeManager *lifeManager;
+    UiManager *uiManager;
 
+    void parseString(std::string basicString);
+
+    bool readFile(std::string fName);
+
+    bool readRule(std::string basicString);
+
+    bool readSize(std::string basicString);
+
+    bool doIteration(int stoi);
+
+    int toInt(char c);
+
+    std::pair<int, int> getCoords(std::string basicString);
+
+public:
+    GameManager(std::string &in, std::string &out);
+
+    GameManager();
+
+    void startGame();
 };
-
-
-#endif //LAB2_GAMEMANAGER_H

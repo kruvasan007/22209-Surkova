@@ -1,8 +1,11 @@
-//
-// Created by Anastasia on 13.09.2023.
-//
+#pragma once
 
-#ifndef LAB2_FILEDATA_H
-#define LAB2_FILEDATA_H
+#include <string>
+#include <vector>
 
-#endif //LAB2_FILEDATA_H
+typedef struct FileData {
+    std::string name;
+    int size;
+    std::vector<int> Bs, Ss;
+    std::vector<std::pair<int, int>> coords;
+} FileData;
