@@ -2,10 +2,20 @@
 #include <vector>
 #include <iostream>
 
+BitArray::BitArray(size_t numBits, unsigned long value) {
+    byteSize = calculateByteSize(numBits);
+    bitSize = numBits;
+    bArr = std::vector<int>(byteSize);
+    size_t i = 0;
+    while (value != 0) {
+        set(i, value & 1);
+        i++;
+        value = value >> 1;
+    }
+}
+
 BitArray::BitArray() {
-    bArr = std::vector<int>(0);
-    bitSize = 0;
-    byteSize = 0;
+
 }
 
 BitArray::BitArray(const BitArray &b) {
@@ -25,8 +35,8 @@ size_t BitArray::count() const {
 
 bool BitArray::operator[](size_t n) const {
     if (n >= bitSize) return false;
-    size_t bytePosition = n / (sizeof(int) * 8);
-    int bitPosition = 1 << (n - bytePosition * (sizeof(int) * 8));
+    size_t bytePosition = calculateBytePosition(n);
+    int bitPosition = calculateBit(n, bytePosition);
     return bArr[bytePosition] & bitPosition;
 }
 
@@ -36,31 +46,36 @@ BitArray &BitArray::set() {
     return *this;
 }
 
+size_t BitArray::calculateBytePosition(const size_t n) {
+    return n / (sizeof(int) * 8);
+}
+
+int BitArray::calculateBit(size_t n, size_t bytePosition) const {
+    return 1 << (n - bytePosition * (sizeof(int) * 8));
+}
+
 BitArray &BitArray::set(size_t n, bool val) {
     if (bitSize < n) {
         std::cout << "Error: size is smaller than n" << std::endl;
         return *this;
     }
-    size_t bytePosition = n / (sizeof(int) * 8);
-    int relativeChanges = 1 << (n - bytePosition * (sizeof(int) * 8));
+    size_t bytePosition = calculateBytePosition(n);
+    int relativeChanges = calculateBit(n, bytePosition);
     bArr[bytePosition] = val ? bArr[bytePosition] | relativeChanges :
                          bArr[bytePosition] & ~(relativeChanges);
     return *this;
 }
 
 void BitArray::swap(BitArray &b) {
-    BitArray tmp = b;
-    b = *this;
-    bArr = tmp.bArr;
-    bitSize = tmp.bitSize;
-    byteSize = tmp.byteSize;
+    std::swap(bArr, b.bArr);
+    std::swap(bitSize, b.bitSize);
+    std::swap(byteSize, b.byteSize);
 }
 
-BitArray &BitArray::operator=(const BitArray &b) {
-    if (this == &b)
-        return *this;
+BitArray &BitArray::BitArray::operator=(const BitArray &b) {
     bitSize = b.bitSize;
     bArr = b.bArr;
+    byteSize = b.byteSize;
     byteSize = b.byteSize;
     return *this;
 }
@@ -69,8 +84,12 @@ size_t BitArray::size() const {
     return bitSize;
 }
 
+size_t BitArray::calculateByteSize(size_t numBits) {
+    return ceil((numBits * 1.0) / (sizeof(int) * 8));
+}
+
 void BitArray::resize(size_t numBits, bool value) {
-    size_t newByteSize = ceil((numBits * 1.0) / (sizeof(int) * 8));
+    size_t newByteSize = calculateByteSize(numBits);
     if (byteSize < newByteSize)
         bArr.resize(newByteSize);
     size_t addBit = numBits - bitSize;
@@ -84,7 +103,7 @@ void BitArray::resize(size_t numBits, bool value) {
 
 void BitArray::pushBack(bool bit) {
     bitSize++;
-    size_t newByteSize = ceil((bitSize * 1.0) / (sizeof(int) * 8));
+    size_t newByteSize = calculateByteSize(bitSize);
     if (byteSize < newByteSize) {
         bArr.resize(newByteSize);
         byteSize = newByteSize;
@@ -103,6 +122,7 @@ BitArray BitArray::operator~() const {
 
 std::string BitArray::toString() const {
     std::string strBitArray;
+    strBitArray.reserve(bitSize);
     for (int i = bitSize - 1; i >= 0; --i)
         strBitArray += std::to_string((*this)[i]);
     return strBitArray;
@@ -177,20 +197,16 @@ BitArray &BitArray::operator|=(const BitArray &b) {
 }
 
 BitArray &BitArray::operator<<=(size_t n) {
-    for (size_t j = 0; j < n; ++j) {
-        for (size_t i = bitSize + j; i > 0; --i)
-            set(i, (*this)[i - 1]);
-        set(0, false);
-    }
+    for (size_t i = bitSize; i >= n; --i)
+        set(i, (*this)[i - n]);
+    set(0, false);
     return *this;
 }
 
 BitArray &BitArray::operator>>=(size_t n) {
-    for (size_t j = 0; j < n; ++j) {
-        for (size_t i = 0; i < bitSize - j - 1; ++i)
-            set(i, (*this)[i + 1]);
-        set(bitSize - 1, false);
-    }
+    for (size_t i = 0; i < bitSize - n - 1; ++i)
+        set(i, (*this)[i + n]);
+    set(bitSize - 1, false);
     return *this;
 }
 
@@ -240,7 +256,7 @@ BitArray operator^(const BitArray &b1, const BitArray &b2) {
         return newBitArr;
     }
     for (int i = 0; i < b1.size(); ++i)
-        newBitArr.set(i, b1[i] | b2[i]);
+        newBitArr.set(i, b1[i] ^ b2[i]);
     return newBitArr;
 }
 

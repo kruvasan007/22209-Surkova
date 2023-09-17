@@ -7,27 +7,23 @@
 class BitArray {
 private:
     std::vector<int> bArr;
-    size_t bitSize;
-    size_t byteSize;
+    size_t bitSize = 0;
+    size_t byteSize = 0;
 
     bool checkSize(const BitArray &b) const;
+
+    static size_t calculateBytePosition(size_t n);
+
+    int calculateBit(size_t n, size_t bytePosition) const;
+
+    size_t calculateByteSize(size_t numBits);
 
 public:
     BitArray();
 
     ~BitArray();
 
-    explicit BitArray(size_t numBits, unsigned long value = 0) {
-        byteSize = ceil((numBits * 1.0) / (sizeof(int) * 8));
-        bitSize = numBits;
-        bArr = std::vector<int>(byteSize);
-        size_t i = 0;
-        while (value != 0) {
-            set(i, value & 1);
-            i++;
-            value = value >> 1;
-        }
-    }
+    explicit BitArray(size_t numBits, unsigned long value = 0);
 
     BitArray(const BitArray &b);
 
@@ -78,9 +74,9 @@ public:
     bool empty() const;
 
     std::string toString() const;
-};
 
-bool operator==(const BitArray &a, const BitArray &b);
+    friend bool operator==(const BitArray &a, const BitArray &b);
+};
 
 bool operator!=(const BitArray &a, const BitArray &b);
 
