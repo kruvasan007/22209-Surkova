@@ -2,6 +2,10 @@
 #include "googletest/googletest/include/gtest/gtest.h"
 #include "BitArray.h"
 
+const std::string exectedDifSizeMessage = "ERROR: Different size";
+const std::string expectedSmallSize = "Error: size is smaller than n";
+
+
 struct MyClassTest : public testing::Test {
     BitArray *bitArray;
     BitArray *toCompareBitArray;
@@ -32,11 +36,6 @@ TEST_F(MyClassTest, Subtest_constructor) {
     EXPECT_EQ(0, newBitArray.size());
 }
 
-TEST_F(MyClassTest, Subtest_equalExcept) {
-    *bitArray = *bitArray;
-    EXPECT_EQ("0000", bitArray->toString());
-}
-
 TEST_F(MyClassTest, Subtest_operatorGet) {
     EXPECT_EQ(false, (*bitArray)[0]);
 }
@@ -60,10 +59,11 @@ TEST_F(MyClassTest, Subtest_operatorEqualNotEqueal) {
 }
 
 TEST_F(MyClassTest, Subtest_swap) {
-    toCompareBitArray->set(1, true);
-    std::string oldArr = bitArray->toString();
+    toCompareBitArray->resize(35, true);
+    BitArray oldArr = BitArray(*bitArray);
     toCompareBitArray->swap(*bitArray);
-    EXPECT_EQ(oldArr, toCompareBitArray->toString());
+    EXPECT_EQ(oldArr.toString(), toCompareBitArray->toString());
+    EXPECT_EQ(oldArr.size(), toCompareBitArray->size());
 }
 
 TEST_F(MyClassTest, Subtest_operatorAndEqual) {
@@ -185,7 +185,7 @@ TEST_F(MyClassTest, Subtest_set) {
 }
 
 TEST_F(MyClassTest, Subtest_setExcept) {
-    toCompareBitArray->set(6,false);
+    toCompareBitArray->set(6, false);
     EXPECT_EQ("0001", toCompareBitArray->toString());
 }
 
