@@ -223,40 +223,35 @@ BitArray BitArray::operator>>(size_t n) const {
 }
 
 BitArray operator&(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray(b1.size());
+    BitArray newBitArr = b1;
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
         newBitArr.clear();
         return newBitArr;
     }
-    for (int i = 0; i < b1.size(); ++i) {
-        newBitArr.set(i, b1[i] & b2[i]);
-    }
+    newBitArr &= b2;
     return newBitArr;
 }
 
 BitArray operator|(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray(b1.size());
+    BitArray newBitArr = b1;
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
         newBitArr.clear();
         return newBitArr;
     }
-    for (int i = 0; i < b1.size(); ++i) {
-        newBitArr.set(i, b1[i] | b2[i]);
-    }
+    newBitArr |= b2;
     return newBitArr;
 }
 
 BitArray operator^(const BitArray &b1, const BitArray &b2) {
-    BitArray newBitArr = BitArray(b1.size());
+    BitArray newBitArr = b1;
     if (b1.size() != b2.size()) {
         std::cout << "ERROR: Different size" << std::endl;
         newBitArr.clear();
         return newBitArr;
     }
-    for (int i = 0; i < b1.size(); ++i)
-        newBitArr.set(i, b1[i] ^ b2[i]);
+    newBitArr ^= b2;
     return newBitArr;
 }
 
