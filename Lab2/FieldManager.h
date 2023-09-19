@@ -3,13 +3,12 @@
 #include <iostream>
 #include <vector>
 
-const size_t neighborhoodsCount = 8;
-
 class FieldManager {
 private:
     int sizeFiled;
     std::vector<std::vector<bool>> field;
 public:
+
     FieldManager(int n = 10);
 
     std::vector<std::vector<bool>> &getField();

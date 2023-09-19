@@ -36,4 +36,6 @@ public:
     GameManager();
 
     void startGame();
+
+    void startOfflineGame(int i);
 };

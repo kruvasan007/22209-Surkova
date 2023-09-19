@@ -41,6 +41,17 @@ bool GameManager::readFile(std::string fName) {
     return true;
 }
 
+void GameManager::startOfflineGame(int i) {
+    for (int j = 0; j < i; ++j) {
+        if (!lifeManager->iteration()) {
+            std::cout << "End the game" << std::endl;
+            return;
+        }
+    }
+    uiManager->printFieldFile(lifeManager->getField(), lifeManager->getFieldSize(), lifeManager->getIteration(),
+                              outputFileName);
+}
+
 void GameManager::startGame() {
     uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getFieldSize(), lifeManager->getIteration());
     std::string instruction;
