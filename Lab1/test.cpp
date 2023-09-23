@@ -2,10 +2,6 @@
 #include "googletest/googletest/include/gtest/gtest.h"
 #include "BitArray.h"
 
-const std::string exectedDifSizeMessage = "ERROR: Different size";
-const std::string expectedSmallSize = "Error: size is smaller than n";
-
-
 struct MyClassTest : public testing::Test {
     BitArray *bitArray;
     BitArray *toCompareBitArray;

@@ -2,6 +2,20 @@
 #include <vector>
 #include <iostream>
 
+namespace {
+    size_t calculateBytePosition(const size_t n) {
+        return n / (sizeof(int) * 8);
+    }
+
+    int calculateBit(size_t n, size_t bytePosition) {
+        return 1 << (n - bytePosition * (sizeof(int) * 8));
+    }
+
+    size_t calculateByteSize(size_t numBits) {
+        return ceil((numBits * 1.0) / (sizeof(int) * 8));
+    }
+}
+
 BitArray::BitArray(size_t numBits, unsigned long value) {
     byteSize = calculateByteSize(numBits);
     bitSize = numBits;
@@ -14,9 +28,7 @@ BitArray::BitArray(size_t numBits, unsigned long value) {
     }
 }
 
-BitArray::BitArray() {
-
-}
+BitArray::BitArray() = default;
 
 BitArray::BitArray(const BitArray &b) {
     bArr = b.bArr;
@@ -44,14 +56,6 @@ BitArray &BitArray::set() {
     for (int i = 0; i < bitSize; ++i)
         set(i, true);
     return *this;
-}
-
-size_t BitArray::calculateBytePosition(const size_t n) {
-    return n / (sizeof(int) * 8);
-}
-
-int BitArray::calculateBit(size_t n, size_t bytePosition) const {
-    return 1 << (n - bytePosition * (sizeof(int) * 8));
 }
 
 BitArray &BitArray::set(size_t n, bool val) {
@@ -82,10 +86,6 @@ BitArray &BitArray::BitArray::operator=(const BitArray &b) {
 
 size_t BitArray::size() const {
     return bitSize;
-}
-
-size_t BitArray::calculateByteSize(size_t numBits) {
-    return ceil((numBits * 1.0) / (sizeof(int) * 8));
 }
 
 void BitArray::resize(size_t numBits, bool value) {
@@ -168,8 +168,8 @@ BitArray &BitArray::operator&=(const BitArray &b) {
         std::cout << "ERROR: Different size" << std::endl;
         return *this;
     }
-    for (int i = 0; i < bitSize; ++i) {
-        set(i, (*this)[i] & b[i]);
+    for (int i = 0; i < byteSize; ++i) {
+        bArr[i] &= b.bArr[i];
     }
     return *this;
 }
@@ -179,8 +179,8 @@ BitArray &BitArray::operator^=(const BitArray &b) {
         std::cout << "ERROR: Different size" << std::endl;
         return *this;
     }
-    for (int i = 0; i < bitSize; ++i) {
-        set(i, (*this)[i] ^ b[i]);
+    for (int i = 0; i < byteSize; ++i) {
+        bArr[i] ^= b.bArr[i];
     }
     return *this;
 }
@@ -190,8 +190,8 @@ BitArray &BitArray::operator|=(const BitArray &b) {
         std::cout << "ERROR: Different size" << std::endl;
         return *this;
     }
-    for (int i = 0; i < bitSize; ++i) {
-        set(i, (*this)[i] | b[i]);
+    for (int i = 0; i < byteSize; ++i) {
+        bArr[i] |= b.bArr[i];
     }
     return *this;
 }

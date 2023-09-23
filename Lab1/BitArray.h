@@ -12,12 +12,6 @@ private:
 
     bool checkSize(const BitArray &b) const;
 
-    static size_t calculateBytePosition(size_t n);
-
-    int calculateBit(size_t n, size_t bytePosition) const;
-
-    size_t calculateByteSize(size_t numBits);
-
 public:
     BitArray();
 
