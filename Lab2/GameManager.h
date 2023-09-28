@@ -13,8 +13,8 @@ class GameManager {
 private:
     std::string outputFileName;
     FileData fileData;
-    LifeManager *lifeManager;
-    UiManager *uiManager;
+    std::unique_ptr <LifeManager> lifeManager;
+    std::unique_ptr <UiManager> uiManager;
 
     void parseString(std::string basicString);
 

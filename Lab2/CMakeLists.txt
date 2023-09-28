@@ -3,4 +3,4 @@ project(Lab2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lab2 main.cpp UiManager.cpp UiManager.h LifeManager.cpp LifeManager.h FieldManager.cpp FieldManager.h GameManager.cpp GameManager.h FileData.h)
+add_executable(Lab2 test.cpp UiManager.cpp UiManager.h LifeManager.cpp LifeManager.h FieldManager.cpp FieldManager.h GameManager.cpp GameManager.h FileData.h)

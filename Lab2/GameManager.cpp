@@ -5,12 +5,12 @@
 
 GameManager::GameManager() {
     fileData.name = "Standard game";
-    uiManager = new UiManager();
+    uiManager = std::make_unique<UiManager>();
     fileData.size = 10;
     uiManager->setPrintData(fileData.name, "#R B3/S23");
     fileData.Bs = {3};
     fileData.Ss = {2, 3};
-    lifeManager = new LifeManager(fileData.Bs, fileData.Ss, fileData.size);
+    lifeManager = std::make_unique<LifeManager>(fileData.Bs, fileData.Ss, fileData.size);
     fileData.coords = {{0, 2},
                        {1, 0},
                        {1, 2},
@@ -22,9 +22,9 @@ GameManager::GameManager() {
 
 GameManager::GameManager(std::string &in, std::string &out) {
     outputFileName = out;
-    uiManager = new UiManager();
+    uiManager = std::make_unique<UiManager>();
     readFile(in);
-    lifeManager = new LifeManager(fileData.Bs, fileData.Ss, fileData.size);
+    lifeManager = std::make_unique<LifeManager>(fileData.Bs, fileData.Ss, fileData.size);
     for (std::pair<int, int> item: fileData.coords)
         lifeManager->setAlive(item.first, item.second);
 }
