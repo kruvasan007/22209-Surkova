@@ -1,3 +1,4 @@
+#include <memory>
 #include "GameManager.h"
 #include "LifeManager.h"
 #include "UiManager.h"

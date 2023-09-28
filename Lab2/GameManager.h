@@ -5,6 +5,7 @@
 #include "LifeManager.h"
 #include "UiManager.h"
 #include "FileData.h"
+#include <memory>
 
 const int SIZE_POS = 3;
 const int NAME_POS = 3;
