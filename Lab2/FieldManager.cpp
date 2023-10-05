@@ -1,33 +1,37 @@
+#pragma once
+
 #include "FieldManager.h"
 
-FieldManager::FieldManager(int n) {
-    sizeFiled = n;
-    field.resize(sizeFiled);
-    for (int i = 0; i < sizeFiled; ++i) {
-        field[i].resize(sizeFiled);
-    }
-}
-
-void FieldManager::set(int i, int j, bool state) {
+void FieldManager::checkBoundaries(std::size_t &i) {
     if (i == sizeFiled) i = 0;
     if (i == -1) i = sizeFiled - 1;
-    if (j == sizeFiled) j = 0;
-    if (j == -1) j = sizeFiled - 1;
-    field[i][j] = state;
 }
 
-std::vector<std::vector<bool>> &FieldManager::getField() {
+std::size_t FieldManager::calculatePosition(std::size_t i, std::size_t j) {
+    return i * sizeFiled + j;
+}
+
+FieldManager::FieldManager(std::size_t n) {
+    sizeFiled = n;
+    field.resize(sizeFiled * sizeFiled);
+}
+
+void FieldManager::set(std::size_t i, std::size_t j, CellState state) {
+    checkBoundaries(i);
+    checkBoundaries(j);
+    field[calculatePosition(i, j)] = state;
+}
+
+std::vector<CellState> &FieldManager::getField() {
     return field;
 }
 
-int FieldManager::getCell(int i, int j) {
-    if (i == sizeFiled) i = 0;
-    if (i == -1) i = sizeFiled - 1;
-    if (j == sizeFiled) j = 0;
-    if (j == -1) j = sizeFiled - 1;
-    return field[i][j] ? 1 : 0;
+bool FieldManager::isCellAlive(std::size_t i, std::size_t j) {
+    checkBoundaries(i);
+    checkBoundaries(j);
+    return field[calculatePosition(i, j)] == CellState::Alive;
 }
 
-int FieldManager::getSize() const {
+std::size_t FieldManager::getSize() const {
     return sizeFiled;
 }

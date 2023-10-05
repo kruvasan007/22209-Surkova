@@ -1,10 +1,8 @@
 #pragma once
 
 #include <vector>
+#include "FieldManager.h"
 #include <Windows.h>
-
-const int DATA_STRING = 4;
-const std::string helpData = "dump <filename> - save universe to file\n tick <n=1> - start doing n iteration \n exit - end game\n help - print man";
 
 class UiManager {
 private:
@@ -17,16 +15,18 @@ private:
 
 public:
 
-    void pullConsoleToCommand(int size);
-
     UiManager();
+
+    void pullConsoleToCommand(size_t size);
 
     void printHelp();
 
-    void setPrintData(std::string n, std::string r);
+    void setGameInformation(const std::string &gameName, const std::string &rulesOfGame);
 
-    void printFieldConsole(std::vector<std::vector<bool>> field, int size, int iterationCount);
+    void printFieldConsole(const std::vector<CellState> &field, size_t size, size_t iterationCount);
 
-    void printFieldFile(std::vector<std::vector<bool>> field, int size, int iterationCount, const std::string& fileName);
+    void
+    printFieldFile(const std::vector<CellState> &field, size_t size, size_t iterationCount,
+                   const std::string &fileName);
 
 };

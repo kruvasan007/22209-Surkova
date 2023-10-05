@@ -2,44 +2,37 @@
 
 #include <string>
 #include <vector>
+#include <bitset>
 #include "FieldManager.h"
+#include "GameParams.h"
 
 class LifeManager {
 private:
-    std::vector<int> birthState;
     std::string gameName;
-    int iterationCounter;
-    int aliveCounter;
-    std::vector<int> survivalState;
-    std::vector<std::vector<int>> neighborhoods;
+    int iterationCounter = 0;
+    int aliveCounter = 0;
+    std::bitset<COUNT_OF_PREVIOUS_STATE> birthState;
+    std::bitset<COUNT_OF_PREVIOUS_STATE> survivalState;
     FieldManager fieldManager;
-public:
+    FieldManager fieldManagerTemp;
 
-    LifeManager(std::vector<int> Bs, std::vector<int> Ss, int fieldSize = 10) {
-        birthState = std::move(Bs);
-        survivalState = std::move(Ss);
-        fieldManager = FieldManager(fieldSize);
-        neighborhoods.resize(fieldManager.getSize());
-        for (int i = 0; i < fieldManager.getSize(); ++i)
-            neighborhoods[i].resize(fieldManager.getSize());
-        aliveCounter = 0;
-        iterationCounter = 0;
-    }
+    void kill(size_t i, size_t j);
+
+    bool checkSurviveNeighborhoods(size_t n);
+
+    bool checkBirthNeighborhoods(size_t n);
+
+    void setAlive(size_t i, size_t j);
+
+public:
+    size_t getFieldSize() const;
+
+    LifeManager(const GameParams &gameParams);
 
     int getIteration() const;
 
-    void setAlive(int i, int j);
+    const std::vector<CellState> &getField();
 
-    std::vector<std::vector<bool>> getField();
-
-    int getFieldSize();
-
-    void kill(int i, int j);
-
-    bool checkSurviveNeighborhoods(int n);
-
-    bool checkBirthNeighborhoods(int n);
-
-    bool iteration();
+    bool nextIteration();
 
 };

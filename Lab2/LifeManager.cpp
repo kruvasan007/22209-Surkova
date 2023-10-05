@@ -1,61 +1,63 @@
 #include "LifeManager.h"
 
+LifeManager::LifeManager(const GameParams &gameParams) {
+    birthState = gameParams.Bs;
+    survivalState = gameParams.Ss;
+    fieldManager = FieldManager(gameParams.size);
+    fieldManagerTemp = FieldManager(gameParams.size);
+    for (auto item: gameParams.firstCells)
+        setAlive(item.x, item.y);
+    fieldManager.getField() = fieldManagerTemp.getField();
+}
+
 int LifeManager::getIteration() const {
     return iterationCounter;
 }
 
-void LifeManager::setAlive(int i, int j) {
-    fieldManager.set(i, j, true);
+void LifeManager::setAlive(size_t i, size_t j) {
+    fieldManagerTemp.set(i, j, CellState::Alive);
     aliveCounter++;
 }
 
-void LifeManager::kill(int i, int j) {
-    fieldManager.set(i, j, false);
+void LifeManager::kill(size_t i, size_t j) {
+    fieldManagerTemp.set(i, j, CellState::Dead);
     aliveCounter--;
 }
 
-std::vector<std::vector<bool>> LifeManager::getField() {
+const std::vector<CellState> &LifeManager::getField() {
     return fieldManager.getField();
 }
 
-int LifeManager::getFieldSize() {
+size_t LifeManager::getFieldSize() const {
     return fieldManager.getSize();
 }
 
-bool LifeManager::checkSurviveNeighborhoods(int n) {
-    for (int i: survivalState) {
-        if (i == n) return true;
-    }
-    return false;
+bool LifeManager::checkSurviveNeighborhoods(size_t n) {
+    return survivalState[n];
 }
 
-bool LifeManager::checkBirthNeighborhoods(int n) {
-    for (int i: birthState) {
-        if (i == n) return true;
-    }
-    return false;
+bool LifeManager::checkBirthNeighborhoods(size_t n) {
+    return birthState[n];
 }
 
-bool LifeManager::iteration() {
+bool LifeManager::nextIteration() {
+    int countNeighborhoods;
     for (int i = 0; i < fieldManager.getSize(); ++i) {
         for (int j = 0; j < fieldManager.getSize(); ++j) {
-            neighborhoods[i][j] = fieldManager.getCell(i - 1, j) + fieldManager.getCell(i - 1, j - 1) +
-                                  fieldManager.getCell(i, j - 1) + fieldManager.getCell(i + 1, j) +
-                                  fieldManager.getCell(i, j + 1) +
-                                  fieldManager.getCell(i + 1, j + 1) + fieldManager.getCell(i + 1, j - 1) +
-                                  fieldManager.getCell(i - 1, j + 1);
-        }
-    }
-    for (int i = 0; i < fieldManager.getSize(); ++i) {
-        for (int j = 0; j < fieldManager.getSize(); ++j) {
-            bool keepAlive = fieldManager.getCell(i, j) and checkSurviveNeighborhoods(neighborhoods[i][j]);
-            bool birthCell = (!fieldManager.getCell(i, j)) and checkBirthNeighborhoods(neighborhoods[i][j]);
-            if (!fieldManager.getCell(i, j) and birthCell)
+            countNeighborhoods = fieldManager.isCellAlive(i - 1, j) + fieldManager.isCellAlive(i - 1, j - 1) +
+                                 fieldManager.isCellAlive(i, j - 1) + fieldManager.isCellAlive(i + 1, j) +
+                                 fieldManager.isCellAlive(i, j + 1) +
+                                 fieldManager.isCellAlive(i + 1, j + 1) + fieldManager.isCellAlive(i + 1, j - 1) +
+                                 fieldManager.isCellAlive(i - 1, j + 1);
+            bool keepAlive = checkSurviveNeighborhoods(countNeighborhoods);
+            bool birthCell = (!fieldManager.isCellAlive(i, j)) and checkBirthNeighborhoods(countNeighborhoods);
+            if (birthCell)
                 setAlive(i, j);
-            else if (fieldManager.getCell(i, j) and !keepAlive)
+            else if (fieldManager.isCellAlive(i, j) and !keepAlive)
                 kill(i, j);
         }
     }
+    fieldManager.getField() = fieldManagerTemp.getField();
     if (aliveCounter == 0) return false;
     iterationCounter++;
     return true;

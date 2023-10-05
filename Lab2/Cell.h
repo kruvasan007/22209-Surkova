@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct Cell {
+struct Cell {
     bool state;
     int *neighborhoods;
-} Cell;
+};

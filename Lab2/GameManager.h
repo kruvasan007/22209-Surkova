@@ -4,35 +4,26 @@
 #include <fstream>
 #include "LifeManager.h"
 #include "UiManager.h"
-#include "FileData.h"
+#include "GameParams.h"
+#include "ParserInputFile.h"
+#include "Coords.h"
 #include <memory>
 
-const int SIZE_POS = 3;
-const int NAME_POS = 3;
+enum class GameMode {
+    Offline,
+    Online,
+};
 
 class GameManager {
 private:
-    std::string outputFileName;
-    FileData fileData;
-    std::unique_ptr <LifeManager> lifeManager;
-    std::unique_ptr <UiManager> uiManager;
+    GameParams gameParams;
+    std::unique_ptr<LifeManager> lifeManager;
+    std::unique_ptr<UiManager> uiManager;
 
-    void parseString(std::string basicString);
-
-    bool readFile(std::string fName);
-
-    bool readRule(std::string basicString);
-
-    bool readSize(std::string basicString);
-
-    bool doIteration(int stoi);
-
-    int toInt(char c);
-
-    std::pair<int, int> getCoords(std::string basicString);
+    bool doIteration(int stoi, GameMode gameMode);
 
 public:
-    GameManager(std::string &in, std::string &out);
+    GameManager(const std::string &in, const std::string &out);
 
     GameManager();
 

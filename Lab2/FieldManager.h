@@ -1,23 +1,31 @@
+#include <vector>
+
 #pragma once
 
-#include <iostream>
-#include <vector>
+enum class CellState {
+    Dead,
+    Alive,
+};
 
 class FieldManager {
 private:
-    int sizeFiled;
-    std::vector<std::vector<bool>> field;
+    std::size_t sizeFiled;
+    std::vector<CellState> field;
+
+    std::size_t calculatePosition(std::size_t i, std::size_t j);
+
+    void checkBoundaries(std::size_t &i);
+
 public:
 
-    FieldManager(int n = 10);
+    FieldManager(std::size_t n = 10);
 
-    std::vector<std::vector<bool>> &getField();
+    std::vector<CellState> &getField();
 
-    void set(int i, int j, bool state);
+    void set(std::size_t i, std::size_t j, CellState state);
 
-    int getSize() const;
+    std::size_t getSize() const;
 
-    int getCell(int i, int j);
-
+    bool isCellAlive(std::size_t i, std::size_t j);
 };
 
