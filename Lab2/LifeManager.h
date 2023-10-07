@@ -25,13 +25,12 @@ private:
     void setAlive(size_t i, size_t j);
 
 public:
-    size_t getFieldSize() const;
 
     LifeManager(const GameParams &gameParams);
 
     int getIteration() const;
 
-    const std::vector<CellState> &getField();
+    const FieldManager &getField() const;
 
     bool nextIteration();
 

@@ -10,14 +10,14 @@ enum class CellState {
 class FieldManager {
 private:
     std::size_t sizeFiled;
+
     std::vector<CellState> field;
 
-    std::size_t calculatePosition(std::size_t i, std::size_t j);
+    std::size_t calculatePosition(std::size_t i, std::size_t j) const;
 
-    void checkBoundaries(std::size_t &i);
+    void checkBoundaries(std::size_t &i) const;
 
 public:
-
     FieldManager(std::size_t n = 10);
 
     std::vector<CellState> &getField();
@@ -26,6 +26,6 @@ public:
 
     std::size_t getSize() const;
 
-    bool isCellAlive(std::size_t i, std::size_t j);
+    bool isCellAlive(std::size_t i, std::size_t j) const;
 };
 

@@ -2,12 +2,12 @@
 
 #include "FieldManager.h"
 
-void FieldManager::checkBoundaries(std::size_t &i) {
+void FieldManager::checkBoundaries(std::size_t &i) const {
     if (i == sizeFiled) i = 0;
     if (i == -1) i = sizeFiled - 1;
 }
 
-std::size_t FieldManager::calculatePosition(std::size_t i, std::size_t j) {
+std::size_t FieldManager::calculatePosition(std::size_t i, std::size_t j) const {
     return i * sizeFiled + j;
 }
 
@@ -26,7 +26,7 @@ std::vector<CellState> &FieldManager::getField() {
     return field;
 }
 
-bool FieldManager::isCellAlive(std::size_t i, std::size_t j) {
+bool FieldManager::isCellAlive(std::size_t i, std::size_t j) const {
     checkBoundaries(i);
     checkBoundaries(j);
     return field[calculatePosition(i, j)] == CellState::Alive;

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "FieldManager.h"
+#include <memory>
+#include "LifeManager.h"
 #include <Windows.h>
 
 class UiManager {
@@ -14,19 +15,18 @@ private:
     void resetConsole();
 
 public:
-
     UiManager();
 
-    void pullConsoleToCommand(size_t size);
+    void updateCursor();
+
+    void clearConsole();
 
     void printHelp();
 
     void setGameInformation(const std::string &gameName, const std::string &rulesOfGame);
 
-    void printFieldConsole(const std::vector<CellState> &field, size_t size, size_t iterationCount);
+    void printFieldConsole(const FieldManager &fieldManager, size_t iteration);
 
-    void
-    printFieldFile(const std::vector<CellState> &field, size_t size, size_t iterationCount,
-                   const std::string &fileName);
+    void printFieldFile(const FieldManager &fieldManager, size_t iteration, const std::string &fileName);
 
 };

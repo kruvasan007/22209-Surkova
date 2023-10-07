@@ -29,40 +29,37 @@ GameManager::GameManager(const std::string &in, const std::string &out) {
     if (!parser->readFile(in, gameParams)) return;
     uiManager->setGameInformation(gameParams.name, gameParams.rulesOfGame);
     lifeManager = std::make_unique<LifeManager>(gameParams);
-
 }
 
 void GameManager::startOfflineGame(int i) {
     doIteration(i, GameMode::Offline);
-    uiManager->printFieldFile(lifeManager->getField(), lifeManager->getFieldSize(), lifeManager->getIteration(),
-                              gameParams.outputFileName);
+    uiManager->printFieldFile(lifeManager->getField(), lifeManager->getIteration(), gameParams.outputFileName);
 }
 
 void GameManager::startGame() {
-    uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getFieldSize(), lifeManager->getIteration());
+    uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getIteration());
     std::string instruction;
     int n;
     while (instruction != "exit") {
-        uiManager->pullConsoleToCommand(lifeManager->getFieldSize());
+        uiManager->updateCursor();
         std::cout << "Enter command: " << std::ends;
         std::cin >> instruction;
         std::cout << "" << std::endl;
         if (instruction.find("tick") == 0) {
             std::cin >> n;
             if (n > 0) {
-                uiManager->pullConsoleToCommand(lifeManager->getFieldSize());
+                uiManager->clearConsole();
                 if (doIteration(n, GameMode::Online)) {
-                    uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getFieldSize(),
-                                                 lifeManager->getIteration());
+                    uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getIteration());
                 }
             } else
                 std::cout << "Error: Incorrect tick number" << std::endl;
         } else if (instruction.find("help") == 0) {
+            uiManager->clearConsole();
             uiManager->printHelp();
-            uiManager->pullConsoleToCommand(lifeManager->getFieldSize());
         } else if (instruction.find("dump") == 0) {
-            uiManager->printFieldFile(lifeManager->getField(), lifeManager->getFieldSize(), lifeManager->getIteration(),
-                                      gameParams.outputFileName);
+            std::cin >> gameParams.outputFileName;
+            uiManager->printFieldFile(lifeManager->getField(), lifeManager->getIteration(), gameParams.outputFileName);
         }
     }
 }
@@ -74,8 +71,7 @@ bool GameManager::doIteration(int n, GameMode gameMode) {
             return true;
         }
         if (gameMode == GameMode::Online)
-            uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getFieldSize(),
-                                         lifeManager->getIteration());
+            uiManager->printFieldConsole(lifeManager->getField(), lifeManager->getIteration());
     }
     return false;
 }

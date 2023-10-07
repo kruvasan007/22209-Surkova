@@ -24,12 +24,8 @@ void LifeManager::kill(size_t i, size_t j) {
     aliveCounter--;
 }
 
-const std::vector<CellState> &LifeManager::getField() {
-    return fieldManager.getField();
-}
-
-size_t LifeManager::getFieldSize() const {
-    return fieldManager.getSize();
+const FieldManager &LifeManager::getField() const {
+    return fieldManager;
 }
 
 bool LifeManager::checkSurviveNeighborhoods(size_t n) {
