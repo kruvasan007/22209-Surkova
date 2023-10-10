@@ -1,13 +1,14 @@
 #include "LifeManager.h"
 
 LifeManager::LifeManager(const GameParams &gameParams) {
-    birthState = gameParams.Bs;
-    survivalState = gameParams.Ss;
+    birthState = gameParams.BirthdayCellsCount;
+    survivalState = gameParams.SurviveCellCount;
     fieldManager = FieldManager(gameParams.size);
     fieldManagerTemp = FieldManager(gameParams.size);
     for (auto item: gameParams.firstCells)
         setAlive(item.x, item.y);
-    fieldManager.getField() = fieldManagerTemp.getField();
+    std::swap(fieldManager, fieldManagerTemp);
+    fieldManagerTemp = fieldManager;
 }
 
 int LifeManager::getIteration() const {
@@ -53,7 +54,8 @@ bool LifeManager::nextIteration() {
                 kill(i, j);
         }
     }
-    fieldManager.getField() = fieldManagerTemp.getField();
+    std::swap(fieldManager, fieldManagerTemp);
+    fieldManagerTemp = fieldManager;
     if (aliveCounter == 0) return false;
     iterationCounter++;
     return true;

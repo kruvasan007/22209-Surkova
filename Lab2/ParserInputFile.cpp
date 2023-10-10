@@ -63,7 +63,7 @@ bool ParserInputFile::readRule(std::string str, GameParams &gameParams) {
     pos++;
     while (str[pos] != '/') {
         if ('9' >= str[pos] and str[pos] >= '0')
-            gameParams.Bs[toInt(str[pos])] = true;
+            gameParams.BirthdayCellsCount[toInt(str[pos])] = true;
         else {
             std::cout << "Error: Wrong rules number" << std::endl;
             return false;
@@ -75,7 +75,7 @@ bool ParserInputFile::readRule(std::string str, GameParams &gameParams) {
     pos++;
     while (pos < str.length()) {
         if ('9' >= str[pos] and str[pos] >= '0')
-            gameParams.Ss[toInt(str[pos])] = true;
+            gameParams.SurviveCellCount[toInt(str[pos])] = true;
         else {
             std::cout << "Error: Wrong rules number" << std::endl;
             return false;

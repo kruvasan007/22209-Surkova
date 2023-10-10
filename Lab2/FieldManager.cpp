@@ -2,13 +2,10 @@
 
 #include "FieldManager.h"
 
-void FieldManager::checkBoundaries(std::size_t &i) const {
-    if (i == sizeFiled) i = 0;
-    if (i == -1) i = sizeFiled - 1;
-}
-
-std::size_t FieldManager::calculatePosition(std::size_t i, std::size_t j) const {
-    return i * sizeFiled + j;
+std::size_t FieldManager::calculatePosition(int i, int j) const {
+    int iCorrect = i > 0 ? i % sizeFiled : (sizeFiled + i) % sizeFiled;
+    int jCorrect = j > 0 ? j % sizeFiled : (sizeFiled + j) % sizeFiled;
+    return iCorrect * sizeFiled + jCorrect;
 }
 
 FieldManager::FieldManager(std::size_t n) {
@@ -17,18 +14,10 @@ FieldManager::FieldManager(std::size_t n) {
 }
 
 void FieldManager::set(std::size_t i, std::size_t j, CellState state) {
-    checkBoundaries(i);
-    checkBoundaries(j);
     field[calculatePosition(i, j)] = state;
 }
 
-std::vector<CellState> &FieldManager::getField() {
-    return field;
-}
-
-bool FieldManager::isCellAlive(std::size_t i, std::size_t j) const {
-    checkBoundaries(i);
-    checkBoundaries(j);
+bool FieldManager::isCellAlive(int i, int j) const {
     return field[calculatePosition(i, j)] == CellState::Alive;
 }
 

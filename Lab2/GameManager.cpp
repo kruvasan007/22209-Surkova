@@ -4,9 +4,9 @@
 
 namespace {
     void setInitialBaseParams(GameParams &gameParams) {
-        gameParams.Bs[3] = true;
-        gameParams.Ss[3] = true;
-        gameParams.Ss[2] = true;
+        gameParams.BirthdayCellsCount[3] = true;
+        gameParams.SurviveCellCount[3] = true;
+        gameParams.SurviveCellCount[2] = true;
         gameParams.firstCells = {{0, 2},
                                  {1, 0},
                                  {1, 2},

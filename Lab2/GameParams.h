@@ -12,6 +12,7 @@ struct GameParams {
     std::string outputFileName;
     std::string rulesOfGame = "#R B3/S23";
     int size = 10;
-    std::bitset<COUNT_OF_PREVIOUS_STATE> Bs, Ss;
+    std::bitset<COUNT_OF_PREVIOUS_STATE> BirthdayCellsCount;
+    std::bitset<COUNT_OF_PREVIOUS_STATE> SurviveCellCount;
     std::vector<Coords> firstCells;
 };

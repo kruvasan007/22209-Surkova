@@ -1,6 +1,6 @@
-#include <vector>
-
 #pragma once
+
+#include <vector>
 
 enum class CellState {
     Dead,
@@ -13,19 +13,15 @@ private:
 
     std::vector<CellState> field;
 
-    std::size_t calculatePosition(std::size_t i, std::size_t j) const;
-
-    void checkBoundaries(std::size_t &i) const;
+    std::size_t calculatePosition(int i, int j) const;
 
 public:
     FieldManager(std::size_t n = 10);
-
-    std::vector<CellState> &getField();
 
     void set(std::size_t i, std::size_t j, CellState state);
 
     std::size_t getSize() const;
 
-    bool isCellAlive(std::size_t i, std::size_t j) const;
+    bool isCellAlive(int i, int j) const;
 };
 
