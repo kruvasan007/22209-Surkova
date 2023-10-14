@@ -2,8 +2,6 @@
 
 #include "Coords.h"
 #include "GameParams.h"
-#include <iostream>
-#include <fstream>
 
 const int SIZE_POS = 3;
 const int NAME_POS = 3;

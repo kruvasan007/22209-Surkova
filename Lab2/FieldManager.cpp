@@ -3,14 +3,14 @@
 #include "FieldManager.h"
 
 std::size_t FieldManager::calculatePosition(int i, int j) const {
-    int iCorrect = i > 0 ? i % sizeFiled : (sizeFiled + i) % sizeFiled;
-    int jCorrect = j > 0 ? j % sizeFiled : (sizeFiled + j) % sizeFiled;
-    return iCorrect * sizeFiled + jCorrect;
+    int iCorrect = i > 0 ? i % sizeField : (sizeField + i) % sizeField;
+    int jCorrect = j > 0 ? j % sizeField : (sizeField + j) % sizeField;
+    return iCorrect * sizeField + jCorrect;
 }
 
 FieldManager::FieldManager(std::size_t n) {
-    sizeFiled = n;
-    field.resize(sizeFiled * sizeFiled);
+    sizeField = n;
+    field.resize(sizeField * sizeField);
 }
 
 void FieldManager::set(std::size_t i, std::size_t j, CellState state) {
@@ -22,5 +22,5 @@ bool FieldManager::isCellAlive(int i, int j) const {
 }
 
 std::size_t FieldManager::getSize() const {
-    return sizeFiled;
+    return sizeField;
 }

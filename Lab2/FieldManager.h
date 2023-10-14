@@ -9,7 +9,7 @@ enum class CellState {
 
 class FieldManager {
 private:
-    std::size_t sizeFiled;
+    std::size_t sizeField;
 
     std::vector<CellState> field;
 

@@ -7,8 +7,7 @@ LifeManager::LifeManager(const GameParams &gameParams) {
     fieldManagerTemp = FieldManager(gameParams.size);
     for (auto item: gameParams.firstCells)
         setAlive(item.x, item.y);
-    std::swap(fieldManager, fieldManagerTemp);
-    fieldManagerTemp = fieldManager;
+    fieldManager = fieldManagerTemp;
 }
 
 int LifeManager::getIteration() const {
@@ -54,8 +53,7 @@ bool LifeManager::nextIteration() {
                 kill(i, j);
         }
     }
-    std::swap(fieldManager, fieldManagerTemp);
-    fieldManagerTemp = fieldManager;
+    fieldManager = fieldManagerTemp;
     if (aliveCounter == 0) return false;
     iterationCounter++;
     return true;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 #include "LifeManager.h"
 #include <Windows.h>
 
