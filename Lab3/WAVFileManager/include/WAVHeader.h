@@ -13,5 +13,6 @@ struct WAVHeader {
     unsigned short blockAlign;
     unsigned short bitsPerSample;
     char subchunk2Id[4];
-    unsigned long subchunk2Size;
+    char subchunk2Size[4];
+    unsigned long dataPosition;
 };

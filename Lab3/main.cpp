@@ -1,21 +1,15 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include "WAVHeader.h"
+#include "Configurator.h"
 
-int main() {
-    FILE *wavFile;
-    fopen_s(&wavFile, "district_four.wav", "rb");
-    WAVHeader wavHeader;
-    fread(&wavHeader, sizeof(wavHeader), 1, wavFile);
-    std::string stopWord = "data";
-    int position = str.find(stopWord) == -1;
-    while (position) {
-        fread(str, sizeof(char), 8, wavFile);
-        position = str.find(stopWord) == -1;
-    }
-    std::vector<char> data;
-    std::cout << data.size() << std::endl;
+int main(int argv, char **argc) {
+    std::string configFileName(argc[1]);
+    std::string outputFileName(argc[2]);
+    std::string input1FileName(argc[3]);
+    std::string input2FileName(argc[4]);
+    std::vector<std::string> inputStreams;
+    inputStreams.push_back(input1FileName);
+    inputStreams.push_back(input2FileName);
 
+    auto configurator = new Configurator::Configurator(configFileName, outputFileName, inputStreams);
+    configurator->process();
     return 0;
 }
