@@ -16,8 +16,7 @@ namespace Configurator {
                     curPosition += 5;
                     input2 = line[curPosition] - '0';
                 } else
-                    return Error::printError(
-                            Error::ErrorContainer(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG));
+                    return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
                 curPosition += 2;
                 size_t lastPos = curPosition;
                 while (line[curPosition] != '\n' && curPosition < line.size())
@@ -35,8 +34,7 @@ namespace Configurator {
                         curPosition++;
                     config.iConverterStruct.startPos = std::stoi(line.substr(lastPos, curPosition - lastPos));
                 } else
-                    return Error::printError(
-                            Error::ErrorContainer(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG));
+                    return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
                 curPosition++;
                 lastPos = curPosition;
                 if (line[curPosition] >= '0' and line[curPosition] <= '9') {
@@ -45,8 +43,7 @@ namespace Configurator {
                     if (curPosition == lastPos) return 1;
                     config.iConverterStruct.endPos = std::stoi(line.substr(lastPos, curPosition - lastPos));
                 } else
-                    return Error::printError(
-                            Error::ErrorContainer(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG));
+                    return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
                 config.tag = Converter::muteConverterTag;
                 configurations.push_back(config);
             } else if ((curPosition = line.find("flex")) != -1) {
@@ -58,13 +55,11 @@ namespace Configurator {
                         curPosition++;
                     config.iConverterStruct.duration = std::stoi(line.substr(lastPos, curPosition - lastPos));
                 } else
-                    return Error::printError(
-                            Error::ErrorContainer(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG));
+                    return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
                 config.tag = Converter::flexConverterTag;
                 configurations.push_back(config);
             } else
-                return Error::printError(
-                        Error::ErrorContainer(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG));
+                return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
         }
         return 0;
     }

@@ -24,8 +24,7 @@ namespace Configurator {
             if (config.iConverterStruct.idStream != 0) {
                 if (wavHeaderParser->getWAVHeader(config.iConverterStruct.idStream).byteRate !=
                     wavHeaderParser->getWAVHeader(0).byteRate) {
-                    return Error::printError(
-                            Error::ErrorContainer(Error::ERROR_CONVERTER, Error::CODE_ERROR_CONVERTER));
+                    return Error::printError(Error::ERROR_CONVERTER, Error::CODE_ERROR_CONVERTER);
                 }
                 wavFileManager->openSubSample(inputStreamNames_[config.iConverterStruct.idStream],
                                               wavHeaderParser->getWAVHeader(
@@ -35,8 +34,9 @@ namespace Configurator {
         return 0;
     }
 
-    void Configurator::process() {
-        if (readConfigurationFile(configFileName_, convertConfigurations)) return;
+    size_t Configurator::process() {
+        size_t err;
+        if ((err = readConfigurationFile(configFileName_, convertConfigurations))) return err;
 
         wavHeaderParser = std::make_unique<WAVHeaderParser>();
         wavHeaderParser->parseFileHeader(inputStreamNames_[0]);
@@ -48,7 +48,8 @@ namespace Configurator {
 
         Converter::SampleStream stream(MAX_COUNT_STREAMS);
         for (int i = 0; i < MAX_COUNT_STREAMS; ++i) {
-            wavHeaderParser->parseFileHeader(inputStreamNames_[i]);
+            if ((err = wavHeaderParser->parseFileHeader(inputStreamNames_[i])))
+                return err;
             stream[i].resize(wavHeaderParser->getWAVHeader(i).byteRate);
         }
 

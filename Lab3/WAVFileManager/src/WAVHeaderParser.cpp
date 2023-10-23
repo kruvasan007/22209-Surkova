@@ -2,20 +2,22 @@
 #include "../Errors.h"
 #include "../include/WAVHeaderParser.h"
 
+const size_t SIZE_READ_BLOCK = 4096;
+
 size_t WAVHeaderParser::parseFileHeader(const std::string &fileName) {
     WAVHeader wavHeader{};
     std::string stopWord = "data";
     std::ifstream file(fileName);
     file.read((char *) &wavHeader, sizeof(WAVHeader));
     if (wavHeader.subchunk1Id != stopWord.c_str()) {
-        std::string str(4096, 0);
+        std::string str(SIZE_READ_BLOCK, 0);
         size_t isFindData = str == stopWord;
         while (!isFindData) {
-            file.read(&str[0], 4096);
+            file.read(&str[0], SIZE_READ_BLOCK);
             isFindData = str.find(stopWord);
         }
         if (isFindData == -1) {
-            return Error::printError(Error::ErrorContainer(Error::ERROR_PARSE_HEADER, Error::CODE_ERROR_PARSE_HEADER));
+            return Error::printError(Error::ERROR_PARSE_HEADER, Error::CODE_ERROR_PARSE_HEADER);
         } else {
             wavHeader.subchunk2Id[0] = 'd';
             wavHeader.subchunk2Id[1] = 'a';

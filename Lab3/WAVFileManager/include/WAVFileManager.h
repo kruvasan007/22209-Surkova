@@ -17,7 +17,7 @@ namespace WAVFManager {
 
         bool readSubSample(std::vector<char> &inputSample);
 
-        void openSubSample(std::string inputFileName, size_t ignoreHeaderSymbols);
+        bool openSubSample(std::string inputFileName, size_t ignoreHeaderSymbols);
 
         void writeHeader(const WAVHeader &wavHeader);
 

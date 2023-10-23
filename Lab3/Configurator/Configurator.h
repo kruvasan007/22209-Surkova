@@ -27,6 +27,6 @@ namespace Configurator {
 
         size_t generateConverters(ConverterStruct &converters);
 
-        void process();
+        size_t process();
     };
 }
