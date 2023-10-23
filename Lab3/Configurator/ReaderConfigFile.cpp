@@ -4,6 +4,7 @@ namespace Configurator {
     size_t readConfigurationFile(const std::string &fileName, std::vector<Config> &configurations) {
         std::ifstream configFile(fileName);
         std::string line;
+
         size_t curPosition;
         while (std::getline(configFile, line)) {
             curPosition = 0;
@@ -56,10 +57,18 @@ namespace Configurator {
                     config.iConverterStruct.duration = std::stoi(line.substr(lastPos, curPosition - lastPos));
                 } else
                     return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
+                curPosition += 1;
+                size_t input2;
+                if (line[curPosition] == '$') {
+                    curPosition++;
+                    input2 = line[curPosition] - '0';
+                } else
+                    return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
+
+                config.iConverterStruct.idStream = input2 - 1;
                 config.tag = Converter::flexConverterTag;
                 configurations.push_back(config);
-            } else
-                return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
+            }
         }
         return 0;
     }

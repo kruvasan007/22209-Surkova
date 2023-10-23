@@ -7,7 +7,7 @@ namespace Converter {
 
     void FlexConverter::convert(SampleStream &sampleStream) {
         if (currentState) {
-            sampleStream[0] = sampleStream[1];
+            sampleStream[0] = sampleStream[idStream_];
         }
         if (secondCounter_ % duration_ == 0) currentState = !currentState;
         secondCounter_++;
