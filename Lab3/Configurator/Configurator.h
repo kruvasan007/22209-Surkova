@@ -2,11 +2,11 @@
 
 #include <memory>
 #include <WAVHeaderParser.h>
-#include <ReaderConfigFile.h>
 #include <WAVFileManager.h>
 #include <WAVFileManager.h>
 #include <FactoryCreator.h>
 #include <IConverterStruct.h>
+#include <IFactory.h>
 #include <Config.h>
 
 namespace Configurator {
@@ -20,12 +20,14 @@ namespace Configurator {
         std::unique_ptr<WAVHeaderParser> wavHeaderParser;
         std::unique_ptr<WAVFManager::WAVFileManager> wavFileManager;
         std::shared_ptr<Factory::IFactory> factory;
-        std::vector<Config> convertConfigurations;
-    public:
-        Configurator(std::string configFileName, std::string inputFileName,
-                     const std::vector<std::string> &outputStreamName);
 
-        size_t generateConverters(ConverterStruct &converters);
+        size_t checkSubStream(ConverterStruct &converters);
+
+        size_t readConfigurationFile(ConverterStruct &converters);
+
+    public:
+        Configurator(std::string configFileName, std::string outputFileName,
+                     const std::vector<std::string> &inputStreamNames);
 
         size_t process();
     };

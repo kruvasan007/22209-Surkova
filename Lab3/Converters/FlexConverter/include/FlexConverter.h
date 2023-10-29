@@ -7,9 +7,13 @@ namespace Converter {
     private:
         size_t duration_;
         bool currentState = false;
-    public:
+
         void setUp(IConverterStruct iConverterStruct) override;
 
-        void convert(SampleStream &sampleStream) override;
+    public:
+
+        size_t parseConfigString(std::string str) override;
+
+        size_t convert(SampleStream &sampleStream) override;
     };
 }

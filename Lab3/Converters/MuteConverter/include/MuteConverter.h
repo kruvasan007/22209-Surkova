@@ -1,14 +1,19 @@
 #pragma once
 
 #include <IConverter.h>
+#include <string>
 
 namespace Converter {
     class MuteConverter : public IConverter {
     private:
         size_t endPos_ = 0;
-    public:
+
         void setUp(IConverterStruct iConverterStruct) override;
 
-        void convert(SampleStream &sampleStream) override;
+    public:
+        size_t parseConfigString(std::string str) override;
+
+        size_t convert(SampleStream &sampleStream) override;
+
     };
 }

@@ -11,7 +11,7 @@ namespace WAVFManager {
         std::ofstream outputFileStream;
         std::ifstream subFileStream;
     public:
-        WAVFileManager(std::string inputFileName, std::string outputFileName);
+        WAVFileManager(const std::string& inputFileName, const std::string& outputFileName);
 
         bool readSample(std::vector<char> &inputSample);
 

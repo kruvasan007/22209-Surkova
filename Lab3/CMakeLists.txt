@@ -10,7 +10,7 @@ include_directories(Configurator)
 
 project(${PROJECT_NAME})
 
-add_executable(${PROJECT_NAME} main.cpp Configurator/Configurator.cpp Configurator/Configurator.h Errors.h Error.cpp Configurator/ReaderConfigFile.cpp Configurator/ReaderConfigFile.h)
+add_executable(${PROJECT_NAME} main.cpp Configurator/Configurator.cpp Configurator/Configurator.h Errors.h Error.cpp)
 
 add_subdirectory(WAVFileManager)
 add_subdirectory(Factory)

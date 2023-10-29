@@ -2,7 +2,7 @@
 #include "../Errors.h"
 
 namespace WAVFManager {
-    WAVFileManager::WAVFileManager(std::string inputFileName, std::string outputFileName) {
+    WAVFileManager::WAVFileManager(const std::string& inputFileName, const std::string& outputFileName) {
         inputFileStream.open(inputFileName, std::ios::in | std::ios::binary);
         outputFileStream.open(outputFileName, std::ios::out | std::ios::binary);
         if (!inputFileStream.is_open() or !outputFileStream.is_open()) {
@@ -26,6 +26,7 @@ namespace WAVFManager {
 
     void WAVFileManager::writeHeader(const WAVHeader &wavHeader) {
         inputFileStream.ignore(wavHeader.dataPosition);
+
         outputFileStream.write((char *) &wavHeader, sizeof(WAVHeader) - sizeof(unsigned long));
     }
 

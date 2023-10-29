@@ -11,8 +11,9 @@ size_t WAVHeaderParser::parseFileHeader(const std::string &fileName) {
     file.read((char *) &wavHeader, sizeof(WAVHeader));
     if (wavHeader.subchunk1Id != stopWord.c_str()) {
         std::string str(SIZE_READ_BLOCK, 0);
-        size_t isFindData = str == stopWord;
-        while (!isFindData) {
+        int isFindData = -1;
+
+        while (isFindData == -1) {
             file.read(&str[0], SIZE_READ_BLOCK);
             isFindData = str.find(stopWord);
         }
@@ -23,11 +24,12 @@ size_t WAVHeaderParser::parseFileHeader(const std::string &fileName) {
             wavHeader.subchunk2Id[1] = 'a';
             wavHeader.subchunk2Id[2] = 't';
             wavHeader.subchunk2Id[3] = 'a';
+
             wavHeader.dataPosition = isFindData + sizeof(WAVHeader) + stopWord.size() + 4;
-            wavHeader.subchunk2Size[0] = str.c_str()[isFindData + 4];
-            wavHeader.subchunk2Size[1] = str.c_str()[isFindData + 5];
-            wavHeader.subchunk2Size[2] = str.c_str()[isFindData + 6];
-            wavHeader.subchunk2Size[3] = str.c_str()[isFindData + 7];
+            wavHeader.subchunk2Size[0] = str[isFindData + 4];
+            wavHeader.subchunk2Size[1] = str[isFindData + 5];
+            wavHeader.subchunk2Size[2] = str[isFindData + 6];
+            wavHeader.subchunk2Size[3] = str[isFindData + 7];
         }
     } else {
         wavHeader.dataPosition = sizeof(WAVHeader);

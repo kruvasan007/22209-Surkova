@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
-#include <../WAVFileManager/include/WAVHeader.h>
 
+#include <cstddef>
 namespace Converter {
     struct IConverterStruct {
         size_t idStream;

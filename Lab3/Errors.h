@@ -2,7 +2,6 @@
 
 #include <string>
 #include <utility>
-#include <iostream>
 
 namespace Error {
     const std::string ERROR_PARSE_HEADER = "ERROR: Unable to parse the header of file";
