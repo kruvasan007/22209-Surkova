@@ -1,6 +1,7 @@
 #pragma once
 
 #include <IConverter.h>
+#include "include/WAVStreamReader.h"
 
 namespace Converter {
     class FlexConverter : public IConverter {
@@ -11,9 +12,9 @@ namespace Converter {
         void setUp(IConverterStruct iConverterStruct) override;
 
     public:
-
         size_t parseConfigString(std::string str) override;
 
-        size_t convert(SampleStream &sampleStream) override;
+        size_t
+        convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) override;
     };
 }

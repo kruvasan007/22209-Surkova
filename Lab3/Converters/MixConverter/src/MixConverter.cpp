@@ -18,22 +18,30 @@ namespace Converter {
             curPosition++;
         IConverterStruct iConverterStruct;
         iConverterStruct.startPos = std::stoi(str.substr(lastPos, curPosition - lastPos));
-        iConverterStruct.idStream = input2 - 1;
+        iConverterStruct.idStreams.push_back(input2 - 1);
         setUp(iConverterStruct);
         return 0;
     }
 
     void MixConverter::setUp(Converter::IConverterStruct iConverterStruct) {
         startPos_ = iConverterStruct.startPos;
-        idStream_ = iConverterStruct.idStream;
+        idStream_ = iConverterStruct.idStreams;
+        countOfStreams = iConverterStruct.idStreams.size();
     }
 
-    size_t MixConverter::convert(SampleStream &sampleStream) {
+    size_t
+    MixConverter::convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) {
+        SampleStream sampleStream(countOfStreams);
+        for (int i = 0; i < countOfStreams; ++i) {
+            sampleStream[i] = streamReader->getStream(idStream_[i]);
+        }
         if (secondCounter_ >= startPos_) {
-            size_t i = 0;
-            while (i < sampleStream[0].size()) {
-                sampleStream[0][i] = (sampleStream[0][i] + sampleStream[idStream_][i]) / 2;
-                i++;
+            for (int j = 0; j < countOfStreams; ++j) {
+                size_t i = 0;
+                while (i < stream.size()) {
+                    stream[i] = (stream[i] + sampleStream[j][i]) / 2;
+                    i++;
+                }
             }
         }
         secondCounter_++;

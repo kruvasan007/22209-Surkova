@@ -35,9 +35,9 @@ namespace Converter {
         endPos_ = iConverterStruct.endPos;
     }
 
-    size_t MuteConverter::convert(SampleStream &sampleStream) {
+    size_t MuteConverter::convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) {
         if (secondCounter_ >= startPos_ and secondCounter_ < endPos_)
-            std::fill(sampleStream[idStream_].begin(), sampleStream[idStream_].end(), 0);
+            std::fill(stream.begin(), stream.end(), 0);
         secondCounter_++;
         return 0;
     }

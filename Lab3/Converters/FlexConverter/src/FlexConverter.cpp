@@ -21,7 +21,7 @@ namespace Converter {
             input2 = str[curPosition] - '0';
         } else
             return Error::printError(Error::ERROR_PARSE_CONFIG, Error::CODE_ERROR_PARSE_CONFIG);
-        iConverterStruct.idStream = input2 - 1;
+        iConverterStruct.idStreams.push_back(input2 - 1);
         setUp(iConverterStruct);
         return 0;
     }
@@ -30,13 +30,10 @@ namespace Converter {
         duration_ = iConverterStruct.duration;
     }
 
-    size_t FlexConverter::convert(SampleStream &sampleStream) {
-        if (sampleStream[0].size() != sampleStream[idStream_].size()) {
-            Error::printError(Error::ERROR_CONVERTER, Error::CODE_ERROR_CONVERTER);
-            return Error::CODE_ERROR_CONVERTER;
-        }
+    size_t FlexConverter::convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) {
+        std::vector<char> sampleStream = streamReader->getStream(idStream_[0]);
         if (currentState) {
-            sampleStream[0] = sampleStream[idStream_];
+            sampleStream[0] = sampleStream[idStream_[0]];
         }
         if (secondCounter_ % duration_ == 0) currentState = !currentState;
         secondCounter_++;

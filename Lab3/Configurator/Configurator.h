@@ -2,8 +2,8 @@
 
 #include <memory>
 #include <WAVHeaderParser.h>
-#include <WAVFileManager.h>
-#include <WAVFileManager.h>
+#include <WAVStreamWriter.h>
+#include <WAVStreamReader.h>
 #include <FactoryCreator.h>
 #include <IConverterStruct.h>
 #include <IFactory.h>
@@ -18,10 +18,9 @@ namespace Configurator {
         std::string outputFileName_;
         std::vector<std::string> inputStreamNames_;
         std::unique_ptr<WAVHeaderParser> wavHeaderParser;
-        std::unique_ptr<WAVFManager::WAVFileManager> wavFileManager;
+        std::unique_ptr<WAVFManager::WAVStreamWriter> wavStreamWriter;
+        std::shared_ptr<Converter::StreamReader>  wavStreamReader;
         std::shared_ptr<Factory::IFactory> factory;
-
-        size_t checkSubStream(ConverterStruct &converters);
 
         size_t readConfigurationFile(ConverterStruct &converters);
 

@@ -2,6 +2,7 @@
 
 #include <IConverter.h>
 #include <string>
+#include <memory>
 
 namespace Converter {
     class MuteConverter : public IConverter {
@@ -13,7 +14,8 @@ namespace Converter {
     public:
         size_t parseConfigString(std::string str) override;
 
-        size_t convert(SampleStream &sampleStream) override;
+        size_t
+        convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) override;
 
     };
 }

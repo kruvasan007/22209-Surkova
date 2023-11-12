@@ -1,7 +1,9 @@
 #pragma once
 
 #include <IConverterStruct.h>
+#include "StreamReader.h"
 #include <string>
+#include <memory>
 #include <vector>
 
 namespace Converter {
@@ -10,7 +12,7 @@ namespace Converter {
     class IConverter {
     protected:
         size_t secondCounter_ = 0;
-        size_t idStream_ = 0;
+        std::vector<size_t> idStream_;
         size_t startPos_ = 0;
 
         virtual void setUp(IConverterStruct iConverterStruct) = 0;
@@ -18,11 +20,7 @@ namespace Converter {
     public:
         virtual ~IConverter() = default;
 
-        size_t getStreamId() const {
-            return idStream_;
-        }
-
-        virtual size_t convert(SampleStream &sampleStream) = 0;
+        virtual size_t convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) = 0;
 
         virtual size_t parseConfigString(std::string str) = 0;
     };

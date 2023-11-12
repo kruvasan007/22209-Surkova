@@ -5,9 +5,11 @@ target_sources(WAVFileManager
         PUBLIC
         include/WAVHeader.h
         include/WAVHeaderParser.h
-        include/WAVFileManager.h
+        include/WAVStreamWriter.h
+        include/WAVStreamReader.h
         PRIVATE
-        src/WAVFileManager.cpp
+        src/WAVStreamWriter.cpp
+        src/WAVStreamReader.cpp
         src/WAVHeaderParser.cpp)
 target_include_directories(WAVFileManager
         PRIVATE
