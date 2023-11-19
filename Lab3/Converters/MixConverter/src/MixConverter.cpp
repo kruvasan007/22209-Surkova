@@ -1,5 +1,5 @@
 #include <MixConverter.h>
-#include "../../Errors.h"
+#include "../../../Utils/include/Errors.h"
 
 namespace Converter {
     size_t MixConverter::parseConfigString(std::string str) {

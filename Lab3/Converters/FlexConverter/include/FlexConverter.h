@@ -1,7 +1,7 @@
 #pragma once
 
 #include <IConverter.h>
-#include "include/WAVStreamReader.h"
+#include <WAVStreamReader.h>
 
 namespace Converter {
     class FlexConverter : public IConverter {

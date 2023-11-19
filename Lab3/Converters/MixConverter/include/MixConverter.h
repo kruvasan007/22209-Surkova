@@ -3,7 +3,6 @@
 #include <IConverter.h>
 #include <string>
 #include <memory>
-#include "Config.h"
 
 namespace Converter {
     class MixConverter : public IConverter {

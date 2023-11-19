@@ -1,5 +1,5 @@
 #include <FlexConverter.h>
-#include "../Errors.h"
+#include "include/Errors.h"
 
 namespace Converter {
 
@@ -28,6 +28,7 @@ namespace Converter {
 
     void FlexConverter::setUp(Converter::IConverterStruct iConverterStruct) {
         duration_ = iConverterStruct.duration;
+        idStream_ = iConverterStruct.idStreams;
     }
 
     size_t FlexConverter::convert(std::vector<char> &stream, std::shared_ptr<StreamReader> &streamReader) {

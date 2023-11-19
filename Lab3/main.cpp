@@ -1,5 +1,5 @@
-#include "Configurator.h"
-#include "Errors.h"
+#include <Configurator.h>
+#include <Errors.h>
 #include <iostream>
 
 const std::string HELP_STRING = "Type of converter:\n \tmix - Two parameters: an additional stream and the insertion location (in seconds, 0 by default). Output stream: Each sample is the average of the corresponding samples of the input streams. The length of the output stream corresponds to the length of the main input stream. If the additional stream is longer than the main one, then part of it is cut off (not used), and if it is shorter, then the output stream outside it is equal to the main input stream. \n"

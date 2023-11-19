@@ -4,7 +4,7 @@ set(SOURCE_LIB )
 add_library(Factory STATIC)
 target_sources(Factory
         PUBLIC
-        include/AliasNames.h
+        include/FactoryAliasNames.h
         include/FactoryCreator.h
         include/IFactory.h
         include/Tag.h

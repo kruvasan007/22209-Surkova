@@ -1,7 +1,6 @@
-#include <Tags.h>
-#include <IConverter/AliasNames.h>
+#include "Tags.h"
+#include <ConvertersAliasNames.h>
 #include <MuteConverter.h>
-#include "include/AliasNames.h"
 #include <MixConverter.h>
 #include <FlexConverter.h>
 

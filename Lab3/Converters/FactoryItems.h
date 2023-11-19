@@ -1,6 +1,6 @@
 #pragma once
 
-#include <AliasNames.h>
+#include "../Factory/include/FactoryAliasNames.h"
 
 namespace Converter{
     Factory::FactoryMap getFactoryItemsMap();

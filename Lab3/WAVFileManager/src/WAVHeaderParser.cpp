@@ -1,5 +1,5 @@
 #include <fstream>
-#include "../Errors.h"
+#include "include/Errors.h"
 #include "../include/WAVHeaderParser.h"
 
 const size_t SIZE_READ_BLOCK = 4096;

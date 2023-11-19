@@ -1,5 +1,5 @@
 #include <WAVStreamWriter.h>
-#include "../Errors.h"
+#include "../Utils/include/Errors.h"
 
 namespace WAVFManager {
     WAVStreamWriter::WAVStreamWriter(const std::string &outputFileName) {

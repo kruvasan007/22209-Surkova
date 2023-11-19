@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.21)
 project(Converters)
 set(SOURCE_LIB)
 add_library(Converters STATIC)
+
+include_directories(../WAVFileManager)
+target_link_libraries(${PROJECT_NAME} WAVFileManager)
 target_sources(Converters
         PUBLIC
         IConverter/IConverter.h
-        IConverter/IConverterStruct.h
         MuteConverter/include/MuteConverter.h
         MixConverter/include/MixConverter.h
         FlexConverter/include/FlexConverter.h

@@ -1,7 +1,8 @@
-#include "Configurator.h"
+#include "include/Configurator.h"
 #include "FactoryItems.h"
 #include "IConverter.h"
-#include "../Errors.h"
+#include "include/Errors.h"
+#include "Tags.h"
 #include <utility>
 
 namespace Configurator {
@@ -39,7 +40,6 @@ namespace Configurator {
 
     size_t Configurator::process() {
         size_t err;
-
         wavHeaderParser = std::make_unique<WAVHeaderParser>();
         Factory::FactoryMap factoryMap = Converter::getFactoryItemsMap();
         factory = Factory::createFactory(factoryMap);

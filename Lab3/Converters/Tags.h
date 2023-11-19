@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Factory/include/Tag.h"
-#include "../Factory/include/AliasNames.h"
-#include "IConverter/AliasNames.h"
+#include "../Factory/include/FactoryAliasNames.h"
+#include "IConverter/ConvertersAliasNames.h"
 
 namespace Converter {
     const Factory::Tag<Converter::IConverterPtr> muteConverterTag{"mute"};

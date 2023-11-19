@@ -1,13 +1,12 @@
 #pragma once
 
 #include <memory>
-#include <WAVHeaderParser.h>
 #include <WAVStreamWriter.h>
 #include <WAVStreamReader.h>
+#include <WAVStreamReader.h>
 #include <FactoryCreator.h>
-#include <IConverterStruct.h>
 #include <IFactory.h>
-#include <Config.h>
+#include <ConvertersAliasNames.h>
 
 namespace Configurator {
     using ConverterStruct = std::vector<Converter::IConverterPtr>;

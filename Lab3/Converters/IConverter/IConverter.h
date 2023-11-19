@@ -1,6 +1,5 @@
 #pragma once
 
-#include <IConverterStruct.h>
 #include "StreamReader.h"
 #include <string>
 #include <memory>
@@ -8,6 +7,13 @@
 
 namespace Converter {
     using SampleStream = std::vector<std::vector<char>>;
+
+    struct IConverterStruct {
+        std::vector<size_t> idStreams;
+        size_t startPos;
+        size_t endPos;
+        size_t duration;
+    };
 
     class IConverter {
     protected:
