@@ -12,6 +12,8 @@ namespace CSVManager {
         std::tuple<Args...> tCurrent;
         std::ifstream *_inputFile;
         size_t sizeOfArgs;
+        char _nextLineSymbol;
+        char _nextColumnSymbol;
         bool endOfFile = false;
     protected:
 
@@ -55,14 +57,16 @@ namespace CSVManager {
             }
         };
 
-        CSVParser(std::ifstream *inputFile, size_t skipLinesCount) : sizeOfArgs(sizeof...(Args)) {
+        CSVParser(std::ifstream *inputFile, size_t skipLinesCount, char nextLineSymbol = '\n',
+                  char nextColumnSymbol = ',') : sizeOfArgs(sizeof...(Args)), _nextColumnSymbol(nextColumnSymbol),
+                                                 _nextLineSymbol(nextLineSymbol) {
             tCurrent = std::make_tuple(Args()...);
             _inputFile = inputFile;
             size_t linesCounter = 0;
             char c;
             while (!_inputFile->eof() and linesCounter < skipLinesCount) {
                 _inputFile->read(&c, 1);
-                if (c == '\n') linesCounter++;
+                if (c == _nextLineSymbol) linesCounter++;
             }
             readString();
         }
@@ -76,7 +80,7 @@ namespace CSVManager {
                 while (i < sizeOfArgs) {
                     std::stringstream str;
                     _inputFile->read(&c, 1);
-                    while (c != ',' and c != '\n' and !_inputFile->eof()) {
+                    while (c != _nextLineSymbol and c != _nextColumnSymbol and !_inputFile->eof()) {
                         str << &c;
                         _inputFile->read(&c, 1);
                     }
