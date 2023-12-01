@@ -13,7 +13,9 @@ namespace CSVManager {
         std::ifstream *_inputFile;
         size_t sizeOfArgs;
         char _nextLineSymbol;
+        int _stringCounter = 1;
         char _nextColumnSymbol;
+        char _escapingSymbol;
         bool endOfFile = false;
     protected:
 
@@ -58,8 +60,10 @@ namespace CSVManager {
         };
 
         CSVParser(std::ifstream *inputFile, size_t skipLinesCount, char nextLineSymbol = '\n',
-                  char nextColumnSymbol = ',') : sizeOfArgs(sizeof...(Args)), _nextColumnSymbol(nextColumnSymbol),
-                                                 _nextLineSymbol(nextLineSymbol) {
+                  char nextColumnSymbol = ',', char escapingSymbol = '"') : sizeOfArgs(sizeof...(Args)),
+                                                                            _nextColumnSymbol(nextColumnSymbol),
+                                                                            _nextLineSymbol(nextLineSymbol),
+                                                                            _escapingSymbol(escapingSymbol) {
             tCurrent = std::make_tuple(Args()...);
             _inputFile = inputFile;
             size_t linesCounter = 0;
@@ -72,22 +76,35 @@ namespace CSVManager {
         }
 
         void readString() {
-            std::vector<std::stringstream> args;
             char c = '\0';
+            bool dataState = false;
             int i = 0;
             if (_inputFile->eof()) endOfFile = true;
             else {
                 while (i < sizeOfArgs) {
                     std::stringstream str;
                     _inputFile->read(&c, 1);
+
                     while (c != _nextLineSymbol and c != _nextColumnSymbol and !_inputFile->eof()) {
-                        str << &c;
+                        if (c == _escapingSymbol)
+                            dataState = !dataState;
+                        else if (dataState) {
+                            str << c;
+                        }
                         _inputFile->read(&c, 1);
+                    }
+
+                    if (str.str().empty()) {
+                        std::cout << "ERROR: Can't parse data: String " << _stringCounter << ", Arg: " << i
+                                  << std::endl;
+                        endOfFile = true;
+                        return;
                     }
                     fillValue(i, str);
                     str.clear();
                     i++;
                 }
+                _stringCounter++;
             }
         }
 
