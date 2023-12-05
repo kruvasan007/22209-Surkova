@@ -22,8 +22,9 @@ namespace CSVManager {
         template<typename T, std::size_t...IndexSeq>
         void checkEach(int i, T &tuple, std::stringstream &str, std::index_sequence<IndexSeq...>) {
             auto setValue = [&i, &str](auto &x, auto indexSeq) {
-                if (i == indexSeq)
+                if (i == indexSeq) {
                     str >> x;
+                }
             };
             (setValue(std::get<IndexSeq>(tuple), IndexSeq), ...);
         }
@@ -34,28 +35,28 @@ namespace CSVManager {
 
     public:
         class Iterator {
-        protected:
-            CSVParser *_date;
+        private:
+            CSVParser _date;
         public:
-            explicit Iterator(CSVParser *date) : _date(date) {}
+            explicit Iterator(CSVParser &date) : _date(date) {}
 
             ~Iterator() = default;
 
             bool operator==(Iterator &it) {
-                return it._date == _date;
+                return _date.endOfFile;
             }
 
             bool operator!=(Iterator &it) {
-                return it._date != _date or !_date->endOfFile;
+                return !_date.endOfFile;
             }
 
             Iterator &operator++() {
-                _date->readString();
+                _date.readString();
                 return *this;
             }
 
             std::tuple<Args...> &operator*() {
-                return _date->tCurrent;
+                return _date.tCurrent;
             }
         };
 
@@ -77,7 +78,7 @@ namespace CSVManager {
 
         void readString() {
             char c = '\0';
-            bool dataState = false;
+            bool escapingEnable = false;
             int i = 0;
             if (_inputFile->eof()) endOfFile = true;
             else {
@@ -85,11 +86,13 @@ namespace CSVManager {
                     std::stringstream str;
                     _inputFile->read(&c, 1);
 
-                    while (c != _nextLineSymbol and c != _nextColumnSymbol and !_inputFile->eof()) {
+                    while ((c != _nextLineSymbol or escapingEnable) and (c != _nextColumnSymbol or escapingEnable) and
+                           !_inputFile->eof()) {
                         if (c == _escapingSymbol)
-                            dataState = !dataState;
-                        else if (dataState) {
+                            escapingEnable = true;
+                        else {
                             str << c;
+                            escapingEnable = false;
                         }
                         _inputFile->read(&c, 1);
                     }
@@ -100,6 +103,7 @@ namespace CSVManager {
                         endOfFile = true;
                         return;
                     }
+
                     fillValue(i, str);
                     str.clear();
                     i++;
@@ -108,8 +112,8 @@ namespace CSVManager {
             }
         }
 
-        Iterator begin() { return Iterator(this); };
+        Iterator begin() { return Iterator(*this); };
 
-        Iterator end() { return Iterator(this); };
+        Iterator end() { return Iterator(*this); };
     };
 };
