@@ -45,15 +45,16 @@ namespace CSVManager {
             ~Iterator() = default;
 
             bool operator==(Iterator &it) {
-                return _date.endOfFile && _end == it._end;
+                return _end == it._end;
             }
 
             bool operator!=(Iterator &it) {
-                return !_date.endOfFile && _end != it._end;
+                return _end != it._end;
             }
 
             Iterator &operator++() {
                 _date.readString();
+                if (_date.endOfFile) _end = true;
                 return *this;
             }
 
