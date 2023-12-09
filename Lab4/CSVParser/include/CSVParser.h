@@ -37,17 +37,19 @@ namespace CSVManager {
         class Iterator {
         private:
             CSVParser _date;
+            bool _end;
         public:
-            explicit Iterator(CSVParser &date) : _date(date) {}
+
+            explicit Iterator(CSVParser &date, bool endState = false) : _date(date), _end(endState) {}
 
             ~Iterator() = default;
 
             bool operator==(Iterator &it) {
-                return _date.endOfFile;
+                return _date.endOfFile && _end == it._end;
             }
 
             bool operator!=(Iterator &it) {
-                return !_date.endOfFile;
+                return !_date.endOfFile && _end != it._end;
             }
 
             Iterator &operator++() {
@@ -85,7 +87,6 @@ namespace CSVManager {
                 while (i < sizeOfArgs) {
                     std::stringstream str;
                     _inputFile->read(&c, 1);
-
                     while ((c != _nextLineSymbol or escapingEnable) and (c != _nextColumnSymbol or escapingEnable) and
                            !_inputFile->eof()) {
                         if (c == _escapingSymbol)
@@ -103,7 +104,6 @@ namespace CSVManager {
                         endOfFile = true;
                         return;
                     }
-
                     fillValue(i, str);
                     str.clear();
                     i++;
@@ -112,8 +112,8 @@ namespace CSVManager {
             }
         }
 
-        Iterator begin() { return Iterator(*this); };
+        Iterator begin() { return Iterator(*this, false); };
 
-        Iterator end() { return Iterator(*this); };
+        Iterator end() { return Iterator(*this, true); };
     };
 };
