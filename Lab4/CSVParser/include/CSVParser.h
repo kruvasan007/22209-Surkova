@@ -112,7 +112,7 @@ namespace CSVManager {
             }
         }
 
-        Iterator begin() { return Iterator(*this, false); };
+        Iterator begin() { return Iterator(*this); };
 
         Iterator end() { return Iterator(*this, true); };
     };
