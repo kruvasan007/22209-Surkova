@@ -36,7 +36,7 @@ namespace CSVManager {
     public:
         class Iterator {
         private:
-            CSVParser _date;
+            CSVParser &_date;
             bool _end;
         public:
 
