@@ -10,7 +10,7 @@ namespace CSVManager {
     class CSVParser {
     private:
         std::tuple<Args...> tCurrent;
-        std::ifstream *_inputFile;
+        std::ifstream &_inputFile;
         size_t sizeOfArgs;
         char _nextLineSymbol;
         int _stringCounter = 1;
@@ -63,17 +63,17 @@ namespace CSVManager {
             }
         };
 
-        CSVParser(std::ifstream *inputFile, size_t skipLinesCount, char nextLineSymbol = '\n',
+        CSVParser(std::ifstream &inputFile, size_t skipLinesCount, char nextLineSymbol = '\n',
                   char nextColumnSymbol = ',', char escapingSymbol = '"') : sizeOfArgs(sizeof...(Args)),
                                                                             _nextColumnSymbol(nextColumnSymbol),
                                                                             _nextLineSymbol(nextLineSymbol),
-                                                                            _escapingSymbol(escapingSymbol) {
+                                                                            _escapingSymbol(escapingSymbol),
+                                                                            _inputFile(inputFile){
             tCurrent = std::make_tuple(Args()...);
-            _inputFile = inputFile;
             size_t linesCounter = 0;
             char c;
-            while (!_inputFile->eof() and linesCounter < skipLinesCount) {
-                _inputFile->read(&c, 1);
+            while (!_inputFile.eof() and linesCounter < skipLinesCount) {
+                _inputFile.read(&c, 1);
                 if (c == _nextLineSymbol) linesCounter++;
             }
             readString();
@@ -83,20 +83,20 @@ namespace CSVManager {
             char c = '\0';
             bool escapingEnable = false;
             int i = 0;
-            if (_inputFile->eof()) endOfFile = true;
+            if (_inputFile.eof()) endOfFile = true;
             else {
                 while (i < sizeOfArgs) {
                     std::stringstream str;
-                    _inputFile->read(&c, 1);
+                    _inputFile.read(&c, 1);
                     while ((c != _nextLineSymbol or escapingEnable) and (c != _nextColumnSymbol or escapingEnable) and
-                           !_inputFile->eof()) {
+                           !_inputFile.eof()) {
                         if (c == _escapingSymbol)
                             escapingEnable = true;
                         else {
                             str << c;
                             escapingEnable = false;
                         }
-                        _inputFile->read(&c, 1);
+                        _inputFile.read(&c, 1);
                     }
 
                     if (str.str().empty()) {

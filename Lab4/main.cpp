@@ -11,7 +11,7 @@ auto &operator<<(std::basic_ostream<Ch, Tr> &os, std::tuple<Args...> const &t) {
 int main(int argc, char **argv) {
     if (argc < 2) return 1;
     std::ifstream file(argv[1]);
-    CSVManager::CSVParser<int, std::string, std::string> parser(&file, 0);
+    CSVManager::CSVParser<int, std::string, std::string> parser(file, 0);
     for (const auto &ps: parser) {
         std::cout << ps << std::endl;
     }
